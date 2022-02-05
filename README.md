@@ -1,6 +1,5 @@
 # intentoLexAnalyser
-Este es un intento de la generacion de un analizador lexico a traves de utilizar el programa "antlr"
-
+Esta es una modificacion del analyzador lexico para agregar opciones de analizador sintactico utilizando "ANTLR"
 para la utilizacion de este programa se estan usando las herramientas
 
 - Yarn@3.1.1
