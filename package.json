@@ -4,10 +4,11 @@
   "type": "module",
   "dependencies": {
     "antlr4": "^4.9.3",
+    "print-tree": "^0.1.5",
     "webpack": "^5.67.0"
   },
   "scripts": {
-    "start":"yarn node src/index.js",
-    "grammar:generate":"java -jar ./antlr-4.9.3-complete.jar -Dlanguage=JavaScript -o ./src/grammar/ ./src/grammar/Hello.g4  "
+    "start": "yarn node src/index.js",
+    "grammar:generate": "java -jar ./antlr-4.9.3-complete.jar -Dlanguage=JavaScript -o ./src/grammar/ ./src/grammar/Hello.g4  "
   }
 }

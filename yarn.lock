@@ -411,6 +411,7 @@ __metadata:
   resolution: "intentoLexAnalyser@workspace:."
   dependencies:
     antlr4: ^4.9.3
+    print-tree: ^0.1.5
     webpack: ^5.67.0
   languageName: unknown
   linkType: soft
@@ -488,6 +489,13 @@ __metadata:
   version: 1.0.0
   resolution: "picocolors@npm:1.0.0"
   checksum: a2e8092dd86c8396bdba9f2b5481032848525b3dc295ce9b57896f931e63fc16f79805144321f72976383fc249584672a75cc18d6777c6b757603f372f745981
+  languageName: node
+  linkType: hard
+
+"print-tree@npm:^0.1.5":
+  version: 0.1.5
+  resolution: "print-tree@npm:0.1.5"
+  checksum: a9b5231e9e2ea3057119060a7cb0289772ecf320ddddf97151488d72b71d65ee5c086e0a4d6a399bf961760710395aeb5e14b37b3f3ad5e2b38fe5195b01f7df
   languageName: node
   linkType: hard
 

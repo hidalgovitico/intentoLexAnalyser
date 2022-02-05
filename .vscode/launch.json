@@ -4,6 +4,16 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+    {
+        "type": "antlr-debug",
+        "request": "launch",
+        "name": "Debug Current Grammar",
+        "input": "${workspaceFolder}/input.txt",
+        "grammar": "${file}",
+        "startRule": "program",
+        "visualParseTree": true,
+        "printParseTree": true
+    },
         {
             "type": "node",
             "request": "launch",

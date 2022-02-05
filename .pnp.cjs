@@ -36,6 +36,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",
           "packageDependencies": [
             ["antlr4", "npm:4.9.3"],
+            ["print-tree", "npm:0.1.5"],
             ["webpack", "virtual:f4ac6e2274bab685f877ac775d340081f0de386bbbf39ca251ccb18e50b8302232550da8e196b701bf8d7ccf948ae6f5bb6e7fe1ab061a09407f462148895418#npm:5.67.0"]
           ],
           "linkType": "SOFT",
@@ -539,6 +540,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["intentoLexAnalyser", "workspace:."],
             ["antlr4", "npm:4.9.3"],
+            ["print-tree", "npm:0.1.5"],
             ["webpack", "virtual:f4ac6e2274bab685f877ac775d340081f0de386bbbf39ca251ccb18e50b8302232550da8e196b701bf8d7ccf948ae6f5bb6e7fe1ab061a09407f462148895418#npm:5.67.0"]
           ],
           "linkType": "SOFT",
@@ -634,6 +636,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/picocolors-npm-1.0.0-d81e0b1927-a2e8092dd8.zip/node_modules/picocolors/",
           "packageDependencies": [
             ["picocolors", "npm:1.0.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["print-tree", [
+        ["npm:0.1.5", {
+          "packageLocation": "./.yarn/cache/print-tree-npm-0.1.5-7a353f7274-a9b5231e9e.zip/node_modules/print-tree/",
+          "packageDependencies": [
+            ["print-tree", "npm:0.1.5"]
           ],
           "linkType": "HARD",
         }]
