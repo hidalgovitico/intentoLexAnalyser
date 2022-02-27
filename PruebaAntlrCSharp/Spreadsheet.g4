@@ -1,9 +1,9 @@
 grammar Spreadsheet;
-program: statement*;
+
+program: statement* EOF;
 
 // Parse rule for statements
 
-statement: ifstmt | printstmt | assignstmt | declaration;
 
 // Parse rule for variable declarations
 
@@ -15,7 +15,7 @@ type: 'int' | 'bool' | 'string';
 
 // Parse rule for if statements
 
-ifstmt: IF LPAREN expression RPAREN statement* ENDIF;
+ifstmt: IF LPAREN expression RPAREN statement+ ENDIF;
 
 // Parse rule for print statements
 
@@ -26,12 +26,12 @@ printstmt: PRINT term SEMICOLON;
 assignstmt: NAME ASSIGN expression SEMICOLON;
 
 // Parse rule for expressions
-
 expression:
-	term						# TermExpr
-	| expression OP expression	# OpExpr
-	| (LPAREN expression RPAREN	)			# ParenExpr;
-
+	expression (OP expression)+	# opExpr
+	| (LPAREN expression RPAREN)			# parenExpr
+	| term						# termExpr
+;
+statement: ifstmt | printstmt | assignstmt | declaration;
 // Parse rule for terms
 
 term: identifier | INTEGER | STRING | BOOLEAN;
@@ -48,10 +48,8 @@ ENDIF: 'endif';
 PRINT: 'print';
 
 // Operators
-EQUAL: '==';
 ASSIGN: '=';
-NOTEQUAL: '!=';
-OP: '+' | '-' | '*' | '/' | '%' | EQUAL;
+OP: '+' | '-' | '*' | '/' | '%' | '==' | '!=' | '>' | '<' | '>=' | '<=';
 
 // Semicolon and parentheses
 SEMICOLON: ';';
@@ -73,4 +71,8 @@ NAME: [a-zA-Z][a-zA-Z0-9]*;
 
 // Ignore all white spaces 
 Space
-  :  (' ' | '\t' | '\n' | 'r')+ -> skip; 
+  :  (' ' | '\t' | '\n' | 'r')+ -> skip;
+// ignore lines starting with '//' or '#'
+LineComment
+  : ( ('//' (~('\n')+ '\n'))
+  |  ('#' (~('\n')+ '\n') ))-> skip;

@@ -28,6 +28,7 @@ public class SpreadsheetVisitor : SpreadsheetBaseVisitor<object?>
     }
 
     private static readonly bool shouldThrow = false;
+
     private void executeException(Exception ex)
     {
         Console.WriteLine(ex.Message);
@@ -42,11 +43,17 @@ public class SpreadsheetVisitor : SpreadsheetBaseVisitor<object?>
     {
         var leftType = getExpressionType(context.expression(0));
         var rightType = getExpressionType(context.expression(1));
+        var op = context.OP(0).GetText(); //TODO: implement loop to get all operators
+        
         // if types are not the same, log information with the error message indicating the type mismatch and the line number
         if (leftType.CompareTo(rightType) != 0)
         {
             executeException(new Exception($"Type mismatch: {leftType} and {rightType} at line {context.Start.Line}"));
             return "";
+        }
+        if(op == "==" || op == "!=" || op == "<" || op == ">" || op == "<=" || op == ">=")
+        {
+            return "bool";
         }
 
         return leftType;
@@ -64,7 +71,14 @@ public class SpreadsheetVisitor : SpreadsheetBaseVisitor<object?>
 
     private string getIdentifierType(SpreadsheetParser.IdentifierContext context)
     {
-        return types[context.GetText()].Trim();
+        var name = context.GetText();
+        if (types.ContainsKey(name))
+            return types[context.GetText()].Trim();
+        else
+        {
+            executeException(new Exception($"Unknown identifier: {name} at line {context.Start.Line}"));
+            return "unknown";
+        }
     }
 
     private string getTermType(SpreadsheetParser.TermContext context)
@@ -145,15 +159,18 @@ public class SpreadsheetVisitor : SpreadsheetBaseVisitor<object?>
 
     public override object? VisitOpExpr(SpreadsheetParser.OpExprContext context)
     {
-        var left = VisitExpression(context.expression(0));
-        var right = VisitExpression(context.expression(1));
-        var op = context.OP().GetText();
+        var leftExpr = context.expression(0);
+        var rightExpr = context.expression(1);
+        var left = VisitExpression(leftExpr);
+        var right = VisitExpression(rightExpr);
+        var op = context.OP(0).GetText(); //TODO: implement all
         // debug info
         var text = context.GetText();
-
+        var textLeft = leftExpr.GetText();
+        var textRight = rightExpr.GetText();
         // get type of the operands
-        var leftType = left.GetType();
-        var rightType = right.GetType();
+        var leftType = getExpressionType(leftExpr);
+        var rightType =  getExpressionType(rightExpr);
         // check if the operands are of the same type
         if (leftType != rightType)
         {
@@ -168,26 +185,28 @@ public class SpreadsheetVisitor : SpreadsheetBaseVisitor<object?>
         }
 
         // if operands are of type int, perform the operation
-        if (leftType == typeof(int))
+        if (leftType == "int")
         {
-            return op switch
-            {
-                "+" => (int) left + (int) right,
-                "-" => (int) left - (int) right,
-                "*" => (int) left * (int) right,
-                "/" => (int) left / (int) right,
-                _ => throw new Exception("Unknown operator")
-            };
+            // return op switch
+            // {
+            //     "+" => (int) left + (int) right,
+            //     "-" => (int) left - (int) right,
+            //     "*" => (int) left * (int) right,
+            //     "/" => (int) left / (int) right,
+            //     _ => throw new Exception("Unknown operator")
+            // };
         }
         else
         {
-            // if operands are strings, concatenate them
-            return op switch
-            {
-                "+" => (string) left + (string) right,
-                _ => throw new Exception("Unknown operator")
-            };
+            // // if operands are strings, concatenate them
+            // return op switch
+            // {
+            //     "+" => (string) left + (string) right,
+            //     _ => throw new Exception("Unknown operator")
+            // };
         }
+
+        return null;
     }
 
     public override object? VisitTermExpr(SpreadsheetParser.TermExprContext context)
@@ -228,7 +247,10 @@ public class SpreadsheetVisitor : SpreadsheetBaseVisitor<object?>
     public override object? VisitIfstmt(SpreadsheetParser.IfstmtContext context)
     {
         // var condition = VisitExpression(context.expression());
-
+        var text = context.GetText();
+        var expr = VisitExpression(context.expression());
+        var exprType = getExpressionType(context.expression());
+        var statements = context.statement();
         return base.VisitIfstmt(context);
     }
 
