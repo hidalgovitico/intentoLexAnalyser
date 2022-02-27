@@ -1,0 +1,55 @@
+name: publish
+
+on:
+  push:
+    branches: [ semantic ]
+
+jobs:
+  publish:
+    # run on self hosted machine
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: |
+          cd PruebaAntlrCSharp
+          dotnet build --configuration Release --no-restore
+          dotnet publish -c Release -o ../dotnet-app -r win-x64 --self-contained true /p:UseAppHost=true
+      #      compress artifacts
+      - name: Compress artifacts
+        run: |
+          cd dotnet-app
+          zip -r ../dotnet-app.zip .
+      # create artifact
+      - name: Create artifact
+        run: |
+          mkdir -p $GITHUB_WORKSPACE/artifacts
+          cp dotnet-app.zip $GITHUB_WORKSPACE/artifacts/dotnet-app.zip
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./dotnet-app.zip
+          asset_name: dotnet-app.zip
+          asset_content_type: application/zip
