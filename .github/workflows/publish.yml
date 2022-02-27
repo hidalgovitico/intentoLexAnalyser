@@ -24,10 +24,9 @@ jobs:
           dotnet build --configuration Release --no-restore
           dotnet publish -c Release -o ../dotnet-app -r win-x64 --self-contained true /p:UseAppHost=true
       #      compress artifacts
-      - name: Compress artifacts
-        run: |
-          cd dotnet-app
-          zip -r ../dotnet-app.zip .
+      - uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r dotnet-app.zip dotnet-app
       # create artifact
       - name: Create artifact
         run: |
