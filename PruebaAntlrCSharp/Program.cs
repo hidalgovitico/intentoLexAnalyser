@@ -22,6 +22,12 @@ endif
 
 print a;
 print b;";
+//print input to parse for debug
+Console.WriteLine("-----------------------------------------------------");
+Console.WriteLine("---------------------- Input ------------------------");
+Console.WriteLine("Input to parse: " + input);
+Console.WriteLine("---------------------- End --------------------------");
+
 // create a new input stream from the text
 var inputStream = new AntlrInputStream(input);
 // create a new lexer from the input stream
@@ -36,8 +42,14 @@ var tree = parser.program();
 // Console.WriteLine(tree.ToStringTree(parser));
 var visitor = new SpreadsheetVisitor(parser);
 visitor.Visit(tree);
+// print a line separator
+Console.WriteLine("---------------------- Output -----------------------");
 // loop through the visitor's type list and print out the types
 foreach (var type in visitor.types)
 {
     Console.WriteLine(type);
 }
+
+Console.WriteLine("---------------------- End --------------------------");
+
+Console.ReadLine();

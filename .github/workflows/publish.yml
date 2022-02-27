@@ -24,7 +24,7 @@ jobs:
         run: |
           cd PruebaAntlrCSharp
           dotnet build --configuration Release --no-restore
-          dotnet publish -c Release -o ../dotnet-app -r win-x64 --self-contained true /p:UseAppHost=true
+          dotnet publish -c Release -o ./dotnet-app -r win-x64 --self-contained true /p:UseAppHost=true
       #      compress artifacts
       - uses: papeloto/action-zip@v1
         with:
