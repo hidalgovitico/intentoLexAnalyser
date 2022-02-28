@@ -19,7 +19,8 @@ b = a + (b * a);
 if (b == 4)
     a = a*a*a; 
 endif
-
+pruebaInvalid = ""hola"";
+pruebaInvalid = c + a;
 print a;
 print b;";
 //print input to parse for debug
